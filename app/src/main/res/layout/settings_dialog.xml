@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <SeekBar
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBarLearnTime"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/tvLearnTime"
+                android:layout_marginEnd="16dp" android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvCaptionLearTime"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:id="@+id/tvLearnTime"
+                tools:text="1-12"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/seekBarLearnTime" android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:id="@+id/tvReminderTime"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                tools:text="0-120" android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        <SeekBar
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBarReminderTime"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvCaptionReminderTime"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/tvReminderTime" android:layout_marginEnd="8dp"/>
+        <TextView
+                android:text="@string/text_goal_learn_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvCaptionLearTime"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp" tools:text="max time"
+                android:layout_marginTop="8dp" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/tvLearnTime"/>
+        <TextView
+                android:text="@string/text_reminder_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvCaptionReminderTime"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                tools:text="reminder"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/seekBarLearnTime" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/tvReminderTime"/>
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

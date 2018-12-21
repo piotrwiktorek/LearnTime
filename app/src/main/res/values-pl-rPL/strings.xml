@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">" Learn Time"</string>
+    <string name="tv_statistics_text">Dzisiejsze statystyki</string>
+    <string name="tv_intervals_text">Czasy nauki:</string>
+    <string name="text_no_intervals">Zacznij się uczyć!</string>
+    <string name="clear_item_title">Wyczyść</string>
+    <string name="about_item_title">Info</string>
+    <string name="settings_dialog_title">Ustawienia</string>
+    <string name="settings_dialog_message">Proszę ustawić swoje preferencje</string>
+    <string name="text_goal_learn_time">Jaki jest twój planowany czas nauki [godziny]:</string>
+    <string name="text_reminder_time">Jak często wyświetlać powiadomienia o przerwie [minuty]:</string>
+    <string name="notification_title">Czas na przerwę</string>
+    <string name="notification_text">Dotknij aby otworzyć aplikację</string>
+</resources>
