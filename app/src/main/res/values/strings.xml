@@ -12,7 +12,7 @@
     <string name="text_goal_learn_time">What is your goal for learning [hours]:</string>
     <string name="text_reminder_time">How often do you want to remind you about pause [minutes]:</string>
     <string name="notification_title">It is time for a pause</string>
-    <string name="notification_text">Tap to open app</string>
+    <string name="notification_text">Tap to open application</string>
 
 
 </resources>

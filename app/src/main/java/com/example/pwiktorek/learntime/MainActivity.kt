@@ -23,26 +23,25 @@ import java.util.*
 
 
 private const val KEY_OVERALL_TIME = "OVERALL_TIME"
-const val KEY_TIMER_IS_RUNNING = "TIMER_IS_RUNNING"
-const val KEY_INTERVAL_START_TIME = "INTERVAL_START_TIME"
-const val KEY_TOTAL_TIME = "TOTAL_TIME"
-const val KEY_INTERVALS = "INTERVALS"
+private const val KEY_TIMER_IS_RUNNING = "TIMER_IS_RUNNING"
+private const val KEY_INTERVAL_START_TIME = "INTERVAL_START_TIME"
+private const val KEY_TOTAL_TIME = "TOTAL_TIME"
+private const val KEY_INTERVALS = "INTERVALS"
 private const val KEY_STOP_TIME = "STOP_TIME"
-const val KEY_NOTIFICATION_COUNTER = "NOTIFICATION_COUNTER"
-const val KEY_GOAL_TIME = "GOAL_TIME"
-const val KEY_REMINDER_TIME = "REMINDER_TIME"
+private const val KEY_NOTIFICATION_COUNTER = "NOTIFICATION_COUNTER"
+private const val KEY_GOAL_TIME = "GOAL_TIME"
+private const val KEY_REMINDER_TIME = "REMINDER_TIME"
+private const val SHARED_PREFERENCES_NAME = "MY_SHARED_PREFERENCES"
 
-
-const val SHARED_PREFERENCES_NAME = "MY_SHARED_PREFERENCES"
-const val TIME_PATTERN = "HH:mm:ss"
+private const val TIME_PATTERN = "HH:mm:ss"
 private const val LEARN_TIME_MIN_VALUE = 1
 private const val LEARN_TIME_MAX_VALUE = 16
 private const val REMINDER_TIME_MIN_VALUE = 30
 private const val REMINDER_TIME_MAX_VALUE = 120
-private const val DEFAULT_LEARN_TIME = 8
-private const val DEFAULT_REMINDER_TIME = 10
+private const val DEFAULT_LEARN_TIME = 8 //8hours
+private const val DEFAULT_REMINDER_TIME = 60 // 60 minutes
 private const val CHANNEL_ID = "LearnTime"
-
+private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
@@ -54,8 +53,8 @@ class MainActivity : AppCompatActivity() {
     var stopTime = 0L
     var overallTime = 0
     var notificationCounter = 0
-    var goalTime = DEFAULT_LEARN_TIME //8hours
-    var reminderTime = DEFAULT_REMINDER_TIME // 60 minutes
+    var goalTime = DEFAULT_LEARN_TIME
+    var reminderTime = DEFAULT_REMINDER_TIME
 
 
     lateinit var sharedPreferences: SharedPreferences
@@ -68,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         createNotificationChannel()
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, Activity.MODE_PRIVATE)
+        //sharedPreferences.edit().clear().apply()
 
 
         setContentView(R.layout.activity_main)
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-        var mBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+        val mBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_pause)
             .setContentTitle(resources.getString(R.string.notification_title))
             .setContentText(resources.getString(R.string.notification_text))
@@ -103,16 +103,15 @@ class MainActivity : AppCompatActivity() {
                         if ((notificationCounter / 60) == reminderTime) {
                             notificationCounter = 0
                             with(NotificationManagerCompat.from(applicationContext)) {
-                                // notificationId is a unique int for each notification that you must define
                                 notify(System.currentTimeMillis().toInt(), mBuilder.build())
                             }
 
                         }
-
+                        tv_timer.text = secondsToTime(totalTime) //hours,Min and Second with am/pm
+                        progressBar.progress = totalTime
+                        Log.d(TAG, (totalTime).toString())
                     }
-                    tv_timer.text = secondsToTime(totalTime) //hours,Min and Second with am/pm
-                    progressBar.progress = totalTime
-                    Log.d("Piotrek", (totalTime).toString())
+
 
                 }
             }
@@ -126,14 +125,12 @@ class MainActivity : AppCompatActivity() {
                     timerIsRunning = false
                     notificationCounter = 0
                     stopTime = System.currentTimeMillis()
-                    Log.d("Piotrek", "when true: $timerIsRunning")
                     btn_start.setImageResource(R.drawable.ic_start)
                     tv_intervals_list.text = addInterval(intervalStartTime, stopTime)
                 }
                 false -> {
                     timerIsRunning = true
                     intervalStartTime = System.currentTimeMillis()
-                    Log.d("Piotrek", "when false: $timerIsRunning")
                     btn_start.setImageResource(R.drawable.ic_pause)
                 }
             }
@@ -251,19 +248,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean(KEY_TIMER_IS_RUNNING, timerIsRunning)
-        outState.putInt(KEY_TOTAL_TIME, totalTime)
-        outState.putString(KEY_INTERVALS, intervals)
-        stopTime = System.currentTimeMillis()
-        outState.putLong(KEY_STOP_TIME, stopTime)
-        outState.putLong(KEY_INTERVAL_START_TIME, intervalStartTime)
-        outState.putInt(KEY_OVERALL_TIME, overallTime)
-        outState.putInt(KEY_GOAL_TIME, goalTime)
-        outState.putInt(KEY_REMINDER_TIME, reminderTime)
-        outState.putInt(KEY_NOTIFICATION_COUNTER, notificationCounter)
-    }
 
     override fun onPause() {
         super.onPause()
@@ -311,12 +295,12 @@ class MainActivity : AppCompatActivity() {
 
         if (timerIsRunning) {
             btn_start.setImageResource(R.drawable.ic_pause)
-            Log.d("Piotrek", "stop time: $stopTime")
+            Log.d(TAG, "stop time: $stopTime")
             totalTime += ((System.currentTimeMillis() - stopTime) / 1000).toInt()
         } else {
             btn_start.setImageResource(R.drawable.ic_start)
         }
-        Log.d("Piotrek", "Loading preferences")
+        Log.d(TAG, "Loading preferences")
         tv_timer.text = secondsToTime(totalTime)
         progressBar.max = goalTime * 3600
         progressBar.progress = totalTime
@@ -351,8 +335,8 @@ class MainActivity : AppCompatActivity() {
 }
 
 fun secondsToTime(seconds: Int): String {
-    var hours = seconds / 3600
-    var minutes = (seconds % 3600) / 60
+    val hours = seconds / 3600
+    val minutes = (seconds % 3600) / 60
     return (String.format("%02d : %02d : %02d", hours, minutes, seconds % 60))
 }
 
